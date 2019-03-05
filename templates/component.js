@@ -21,14 +21,16 @@ const getDimensions = (size, sizes) => {
     : { width, height }
 }
 
-const getCss = (size, sizes, fillColor, fillColorRule, noStyles) => {
+const getCss = (size, sizes, fillColor, fillColorRule, strokeColor, strokeColorRule, noStyles) => {
   if (noStyles) { return '' }
   const dimensions = getDimensions(size, sizes)
   const fillRule = fillColor && fillColorRule ? `${fillColorRule}{ fill: ${fillColor}; }` : ''
+  const strokeRule = strokeColor && strokeColorRule ? `${strokeColorRule}{ stroke: ${strokeColor}; }` : ''
   return css`
     width: ${dimensions.width}px;
     height: ${dimensions.height}px;
     ${fillRule}
+    ${strokeRule}
   `
 }
 
@@ -37,8 +39,10 @@ const propsToCss = ({
   sizes,
   fillColor,
   fillColorRule,
+  strokeColor,
+  strokeColorRule,
   noStyles
-}) => getCss(size, sizes, fillColor, fillColorRule, noStyles)
+}) => getCss(size, sizes, fillColor, fillColorRule, strokeColor, strokeColorRule, noStyles)
 
 const Image = styled.svg`${propsToCss}`
 
@@ -53,6 +57,8 @@ const defaultProps = {
   viewBox,
   fillColor: null,
   fillColorRule: '&&& path, &&& use, &&& g',
+  strokeColor: null,
+  strokeColorRule: '&&& path, &&& use, &&& g',
   sizes,
   size: null
 }
@@ -60,6 +66,8 @@ const defaultProps = {
 const propTypes = {
   fillColor: PropTypes.string,
   fillColorRule: PropTypes.string,
+  strokeColor: PropTypes.string,
+  strokeColorRule: PropTypes.string,
   viewBox: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   size: PropTypes.oneOfType([
